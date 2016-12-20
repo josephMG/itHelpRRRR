@@ -1,24 +1,14 @@
-# README
+Day 1, 踏進RRRR吧。
+[http://ithelp.ithome.com.tw/articles/10186143](http://ithelp.ithome.com.tw/articles/10186143)
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+Day 2, Rails 開始
+[http://ithelp.ithome.com.tw/articles/10186194](http://ithelp.ithome.com.tw/articles/10186194)
 
-Things you may want to cover:
+Day 3, MVC 跟 scaffold
+[http://ithelp.ithome.com.tw/articles/10186554](http://ithelp.ithome.com.tw/articles/10186554)
 
-* Ruby version
+Day 4, Controller的CRUD
+[http://ithelp.ithome.com.tw/articles/10186676](http://ithelp.ithome.com.tw/articles/10186676)
 
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+Day 5, 最後的RR，Rails routing
+[http://ithelp.ithome.com.tw/articles/10186820](http://ithelp.ithome.com.tw/articles/10186820)
