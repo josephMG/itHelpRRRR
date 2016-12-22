@@ -14,9 +14,11 @@ Day 5, 最後的RR，Rails routing
 [http://ithelp.ithome.com.tw/articles/10186820](http://ithelp.ithome.com.tw/articles/10186820)
 
 Day 6,  先寫下接下來的目錄！
+[http://ithelp.ithome.com.tw/articles/10186985](http://ithelp.ithome.com.tw/articles/10186985)
 
 ### 先把React 跟 Rails 連起來！
 Day 7,  React_on_rails gem 我後來還是放棄官方的了
+[http://ithelp.ithome.com.tw/articles/10187127](http://ithelp.ithome.com.tw/articles/10187127)
 
 Day 8,  React_on_rails 先玩點範例 邊玩邊學
 
