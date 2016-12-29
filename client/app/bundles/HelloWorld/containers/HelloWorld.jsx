@@ -1,24 +1,35 @@
 import React, { PropTypes } from 'react';
-import HelloWorldWidget from '../components/HelloWorldWidget';
+import HelloWorldComponentWidget from '../components/HelloWorldComponentWidget';
+import HelloWorldClassWidget from '../components/HelloWorldClassWidget';
+import HelloWorldStatelessWidget from '../components/HelloWorldStatelessWidget';
 
 let propTypes = {
-  name: PropTypes.string.isRequired, 
+  name: PropTypes.string.isRequired,
 };
 class HelloWorld extends React.Component {
   constructor(props, context) {
     super(props, context);
-    this.state = { 
-      name: this.props.name,
-      testInt: 0 
+    this.state = {
+      nameForComponent: this.props.name,
+      nameForClass: this.props.name,
+      nameForStateless: this.props.name
     };
   }
-  updateName(name) {
-    this.setState({testInt: this.state.testInt+1})
+  updateComponentName(name) {
+    this.setState({nameForComponent: name})
+  }
+  updateClassName(name) {
+    this.setState({nameForClass: name})
+  }
+  updateStatelessName(name) {
+    this.setState({nameForStateless: name})
   }
   render() {
     return (
       <div>
-        <HelloWorldWidget name={this.state.name} updateName={e => this.updateName(e)} />
+        <HelloWorldComponentWidget name={this.state.nameForComponent} updateName={e => this.updateComponentName(e)} />
+        <HelloWorldClassWidget name={this.state.nameForClass} updateName={e => this.updateClassName(e)} />
+        <HelloWorldStatelessWidget name={this.state.nameForStateless} updateName={e => this.updateStatelessName(e)} />
       </div>
     );
   }
