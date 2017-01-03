@@ -6,7 +6,9 @@ class BooksController < ApplicationController
   def index
     @books = Book.includes(:author)
   end
-
+	def home
+    @books = {books: Book.includes(:author).as_json(methods: [:author_name])}
+	end
   # GET /books/1
   # GET /books/1.json
   def show

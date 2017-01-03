@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+	root "books#home"
   get 'hello_world', to: 'hello_world#index'
   resources :books, :defaults => {:format => :json}
   #resources :books, defaults: {format: :json}

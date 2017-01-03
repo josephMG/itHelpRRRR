@@ -1,59 +1,68 @@
+// Run like this:
+// cd client && npm run build:client
+// Note that Foreman (Procfile.dev) has also been configured to take care of this.
+
+/* eslint-disable comma-dangle */
+
 const webpack = require('webpack');
-const path = require('path');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
+
+const config = require('./webpack.base.config');
 
 const devBuild = process.env.NODE_ENV !== 'production';
-const nodeEnv = devBuild ? 'development' : 'production';
 
-const config = {
-  entry: [
-    'es5-shim/es5-shim',
-    'es5-shim/es5-sham',
-    'babel-polyfill',
-    './app/bundles/HelloWorld/startup/HelloWorldApp',
-  ],
-
-  output: {
-    filename: 'webpack-bundle.js',
-    path: '../app/assets/webpack',
-  },
-
-  resolve: {
-    extensions: ['', '.js', '.jsx'],
-    alias: {
-      react: path.resolve('./node_modules/react'),
-      'react-dom': path.resolve('./node_modules/react-dom'),
-    },
-  },
-  plugins: [
-    new webpack.DefinePlugin({
-      'process.env': {
-        NODE_ENV: JSON.stringify(nodeEnv),
-      },
-    }),
-  ],
-  module: {
-    loaders: [
-      {
-        test: require.resolve('react'),
-        loader: 'imports?shim=es5-shim/es5-shim&sham=es5-shim/es5-sham',
-      },
-      {
-        test: /\.jsx?$/,
-        loader: 'babel-loader',
-        exclude: /node_modules/,
-      },
-    ],
-  },
+config.output = {
+  filename: '[name]-bundle.js',
+  path: '../app/assets/webpack',
+  publicPath: '/assets/',
 };
 
-module.exports = config;
+// See webpack.client.base.config for adding modules common to both the webpack dev server and rails
+
+config.module.loaders.push(
+  {
+    test: /\.jsx?$/,
+    loader: 'babel-loader',
+    exclude: /node_modules/,
+  },
+  {
+    test: /\.css$/,
+    loader: ExtractTextPlugin.extract(
+      'style',
+      'css?minimize&modules&importLoaders=1&localIdentName=[name]__[local]__[hash:base64:5]' +
+      '!postcss'
+    ),
+  },
+  {
+    test: /\.scss$/,
+    loader: ExtractTextPlugin.extract(
+      'style',
+      'css?minimize&modules&importLoaders=3&localIdentName=[name]__[local]__[hash:base64:5]' +
+      '!postcss' +
+      '!sass' +
+      '!sass-resources'
+    ),
+  },
+  {
+    test: require.resolve('react'),
+    loader: 'imports?shim=es5-shim/es5-shim&sham=es5-shim/es5-sham',
+  },
+  {
+    test: require.resolve('jquery-ujs'),
+    loader: 'imports?jQuery=jquery',
+  }
+);
+
+config.plugins.push(
+  new ExtractTextPlugin('[name]-bundle.css', { allChunks: true }),
+  new webpack.optimize.DedupePlugin()
+);
 
 if (devBuild) {
   console.log('Webpack dev build for Rails'); // eslint-disable-line no-console
-  module.exports.devtool = 'eval-source-map';
+  config.devtool = 'eval-source-map';
 } else {
-  config.plugins.push(
-    new webpack.optimize.DedupePlugin()
-  );
   console.log('Webpack production build for Rails'); // eslint-disable-line no-console
 }
+
+module.exports = config;
