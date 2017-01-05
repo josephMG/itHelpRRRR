@@ -1,5 +1,6 @@
 class BooksController < ApplicationController
-  before_action :set_book, only: [:show, :edit, :update, :destroy]
+  protect_from_forgery with: :null_session, if: Proc.new { |c| c.request.format == 'application/json' }
+  before_action :set_book, only: [:show, :edit, :update, :destroy, :update_status]
 
   # GET /books
   # GET /books.json
@@ -31,8 +32,9 @@ class BooksController < ApplicationController
 
     respond_to do |format|
       if @book.save
+        @books=Book.includes(:author)
         format.html { redirect_to @book, notice: 'Book was successfully created.' }
-        format.json { render :show, status: :created, location: @book }
+        format.json { render action: :index, status: :created }
       else
         format.html { render :new }
         format.json { render json: @book.errors, status: :unprocessable_entity }
@@ -45,8 +47,9 @@ class BooksController < ApplicationController
   def update
     respond_to do |format|
       if @book.update(book_params)
+        @books=Book.includes(:author)
         format.html { redirect_to @book, notice: 'Book was successfully updated.' }
-        format.json { render :show, status: :ok, location: @book }
+        format.json { render action: :index, status: :ok, location: @book }
       else
         format.html { render :edit }
         format.json { render json: @book.errors, status: :unprocessable_entity }
@@ -63,7 +66,19 @@ class BooksController < ApplicationController
       format.json { head :no_content }
     end
   end
-
+  def update_status
+    status = params[:status]
+    respond_to do |format|
+      if @book.update(book_params)
+        @books=Book.includes(:author)
+        format.html { redirect_to @book, notice: 'Book was successfully updated.' }
+        format.json { render action: :index, status: :ok, location: @book }
+      else
+        format.html { render :edit }
+        format.json { render json: @book.errors, status: :unprocessable_entity }
+      end
+    end
+  end
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_book

@@ -2,7 +2,9 @@ import React, { PropTypes } from 'react';
 import Book from './Book';
 import BookInputWidget from './BookInputWidget';
 const  propTypes = {
-  updateBooks: PropTypes.func.isRequired,
+  updateBook: PropTypes.func.isRequired,
+  updateBookStatus: PropTypes.func.isRequired,
+  deleteBook: PropTypes.func.isRequired,
   books: PropTypes.array.isRequired,
 };
 class ReadingListWidget extends React.Component {
@@ -17,17 +19,18 @@ class ReadingListWidget extends React.Component {
 			modifyList: []
 		}
   }
-
+  componentWillReceiveProps(nextProps){
+    let {books} = nextProps;
+    this.setState({books})
+  }
 	onBookDelete(id){
-		console.log(id);
 		let books = this.state.books.filter((book, i) => {
-			console.log(book);
 			return book.id!=id;
 		});
+    this.props.deleteBook(id);
 		this.setState({books})
 	}
 	onBookModify(id){
-		console.log(id);
 		let modifyList = this.state.modifyList;
 		if(modifyList.indexOf(id)==-1){
 			modifyList.push(id);
@@ -40,11 +43,13 @@ class ReadingListWidget extends React.Component {
 		});
 		this.setState({modifyList});
 	}
-	onConfirmModify(id){
+	onConfirmModify(attr, id=0){
+    console.log(attr)
 		let modifyList = this.state.modifyList.filter((modifiedID) => {
 			return modifiedID!=id;
 		});
 		this.setState({modifyList});
+    this.props.updateBook(attr, id);
 	}
   render() {
     const { books, modifyList } = this.state;
@@ -55,6 +60,7 @@ class ReadingListWidget extends React.Component {
 								key={index}
 								onDelete = {this.onBookDelete}
 								onModify = {this.onBookModify}
+                onUpdateStatus = {this.props.updateBookStatus}
 					/>
 				);
 			}else{
@@ -82,7 +88,7 @@ class ReadingListWidget extends React.Component {
 				</div>
 				{bookComponents}
         <hr />
-					<BookInputWidget />
+					<BookInputWidget onConfirm = {this.onConfirmModify}/>
         <hr />
       </div>
     );

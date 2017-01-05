@@ -5,7 +5,6 @@ const propTypes = {
 	status:				PropTypes.string,
 	author_id:		PropTypes.number,
 	author_name:	PropTypes.string,
-	onCreate:			PropTypes.func,
 	onCancel:			PropTypes.func,
 	onConfirm:		PropTypes.func
 }
@@ -15,7 +14,6 @@ const defaultProps = {
 	status:				'unread',
 	author_id:		0,
 	author_name:	'',
-	onCreate:			function(){},
 	onCancel:			function(){},
 	onConfirm:		function(){}
 }
@@ -26,7 +24,6 @@ class Book extends React.Component {
 		this.onConfirmClick = this.onConfirmClick.bind(this);
 		this.onCancelClick = this.onCancelClick.bind(this);
 		this.onCreateClick = this.onCreateClick.bind(this);
-		console.log(props)
 		this.state = {
 			name: props.name || '',
 			status: props.status || 'unread',
@@ -55,8 +52,11 @@ class Book extends React.Component {
 		}
 	}
 	onCreateClick(e){
-		let {id, onCreate} = this.props;
-		onCreate(id);
+		let {id, onConfirm} = this.props;
+		var myForm = document.getElementById('myForm');
+		let formData = new FormData(myForm);
+		formData.append("book[status]",this.state.status)
+		onConfirm(formData, id);
 	}
 	onCancelClick(e){
 		let {id, onCancel} = this.props;
@@ -64,7 +64,10 @@ class Book extends React.Component {
 	}
 	onConfirmClick(e){
 		let {id, onConfirm} = this.props;
-		onConfirm(id);
+		var myForm = document.getElementById('myForm');
+		let formData = new FormData(myForm);
+		formData.append("book[status]",this.state.status)
+		onConfirm(formData, id);
 	}
 	render() {
 		const {id} = this.props;
@@ -81,13 +84,13 @@ class Book extends React.Component {
 				</span>
 		}
 		return (
-			<form className="form form-inline" role="form">
+			<form className="form form-inline" id="myForm" role="form" ref='form' name="book">
 				<div className="row">
 					<div className="col-md-1 form-group">{''}</div>
 					<div className="col-md-2 form-check">
 						<label className="form-check">
 							<input type="checkbox"
-										 name={"status"}
+										 name="book[status]"
 										 className="form-check-input"
 										 onChange={this.onCheckboxChange}
 							/>
@@ -96,11 +99,11 @@ class Book extends React.Component {
 					</div>
 					<div className="col-md-3 ">
 						<label className="sr-only" htmlFor="bookName">書名</label>
-						<input id="bookName" className="form-control" type="text" name="name" value={name}/>
+						<input id="bookName" className="form-control" type="text" name="book[name]" defaultValue={name}/>
 					</div>
 					<div className="col-md-2 form-group">
     				<label className="sr-only" htmlFor="authorName">作者</label>
-						<input id="authorName" className="form-control" type="text" name="author_name" value={author_name} />
+						<input id="authorName" className="form-control" type="text" name="book[author_attributes][name]" defaultValue={author_name} />
 					</div>
 					<div className="offset-md-1 col-md-3 form-group">
 						{buttons}
