@@ -59,7 +59,7 @@ class Book extends React.Component {
 				</div>
 				<div className="col-md-3">{name}</div>
 				<div className="col-md-2">{author_name}</div>
-				<div className="col-md-4">
+				<div className="offset-md-1 col-md-3">
 					<button type="button" className="btn btn-outline-success" onClick={this.onModifyClick}>Modify</button>
 					<button type="button" className="btn btn-outline-danger" onClick={this.onDeleteClick}>Delete</button>
 				</div>

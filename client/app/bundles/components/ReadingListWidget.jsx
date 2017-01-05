@@ -52,7 +52,7 @@ class ReadingListWidget extends React.Component {
 			if(modifyList.indexOf(book.id)==-1){
 				return(
 					<Book { ...book}
-								key={index} 
+								key={index}
 								onDelete = {this.onBookDelete}
 								onModify = {this.onBookModify}
 					/>
@@ -60,13 +60,13 @@ class ReadingListWidget extends React.Component {
 			}else{
 				return(
 					<BookInputWidget { ...book}
-								key={index} 
+								key={index}
 								onConfirm = {this.onConfirmModify}
 								onCancel = {this.onCancelModify}
 					/>
 				);
 			}
-		});	
+		});
     return (
       <div className="container">
         <h3>

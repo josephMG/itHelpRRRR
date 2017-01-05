@@ -81,20 +81,32 @@ class Book extends React.Component {
 				</span>
 		}
 		return (
-			<div className="row">
-				<div className="col-md-1">{''}</div>
-				<div className="col-md-2">
-					<input type="checkbox" name={"status"} onChange={this.onCheckboxChange} />
-					<label>{status}</label>
+			<form className="form form-inline" role="form">
+				<div className="row">
+					<div className="col-md-1 form-group">{''}</div>
+					<div className="col-md-2 form-check">
+						<label className="form-check">
+							<input type="checkbox"
+										 name={"status"}
+										 className="form-check-input"
+										 onChange={this.onCheckboxChange}
+							/>
+							{status}
+						</label>
+					</div>
+					<div className="col-md-3 ">
+						<label className="sr-only" htmlFor="bookName">書名</label>
+						<input id="bookName" className="form-control" type="text" name="name" value={name}/>
+					</div>
+					<div className="col-md-2 form-group">
+    				<label className="sr-only" htmlFor="authorName">作者</label>
+						<input id="authorName" className="form-control" type="text" name="author_name" value={author_name} />
+					</div>
+					<div className="offset-md-1 col-md-3 form-group">
+						{buttons}
+					</div>
 				</div>
-				<div className="col-md-3">
-					<input type="text" name="name" value={name}/>
-				</div>
-				<div className="col-md-2"><input type="text" name="author_name" value={author_name} /></div>
-				<div className="col-md-4">
-					{buttons}
-				</div>
-			</div>
+			</form>
 		);
 	}
 }
