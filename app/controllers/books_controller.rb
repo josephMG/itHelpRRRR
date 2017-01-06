@@ -5,10 +5,10 @@ class BooksController < ApplicationController
   # GET /books
   # GET /books.json
   def index
-    @books = Book.includes(:author).order(:id)
+    @books = Book.includes(:author)
   end
 	def home
-    @books = {books: Book.includes(:author).order(:id).as_json(methods: [:author_name])}
+    @books = {books: Book.includes(:author).as_json(methods: [:author_name])}
 	end
   # GET /books/1
   # GET /books/1.json
@@ -32,7 +32,7 @@ class BooksController < ApplicationController
 
     respond_to do |format|
       if @book.save
-        @books=Book.includes(:author).order(:id)
+        @books=Book.includes(:author)
         format.html { redirect_to @book, notice: 'Book was successfully created.' }
         format.json { render action: :index, status: :created }
       else
@@ -47,7 +47,7 @@ class BooksController < ApplicationController
   def update
     respond_to do |format|
       if @book.update(book_params)
-        @books=Book.includes(:author).order(:id)
+        @books=Book.includes(:author)
         format.html { redirect_to @book, notice: 'Book was successfully updated.' }
         format.json { render action: :index, status: :ok, location: @book }
       else
@@ -70,7 +70,7 @@ class BooksController < ApplicationController
     status = params[:status]
     respond_to do |format|
       if @book.update(book_params)
-        @books=Book.includes(:author).order(:id)
+        @books=Book.includes(:author)
         format.html { redirect_to @book, notice: 'Book was successfully updated.' }
         format.json { render action: :index, status: :ok, location: @book }
       else
