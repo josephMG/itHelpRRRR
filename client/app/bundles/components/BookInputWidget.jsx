@@ -17,7 +17,7 @@ const defaultProps = {
 	onCancel:			function(){},
 	onConfirm:		function(){}
 }
-class Book extends React.Component {
+class BookInputWidget extends React.Component {
 	constructor(props){
 		super(props);
 		this.onCheckboxChange = this.onCheckboxChange.bind(this);
@@ -57,6 +57,7 @@ class Book extends React.Component {
 		let formData = new FormData(myForm);
 		formData.append("book[status]",this.state.status)
 		onConfirm(formData, id);
+		myForm.reset();
 	}
 	onCancelClick(e){
 		let {id, onCancel} = this.props;
@@ -68,6 +69,7 @@ class Book extends React.Component {
 		let formData = new FormData(myForm);
 		formData.append("book[status]",this.state.status)
 		onConfirm(formData, id);
+		myForm.reset();
 	}
 	render() {
 		const {id} = this.props;
@@ -113,6 +115,6 @@ class Book extends React.Component {
 		);
 	}
 }
-Book.propTypes = propTypes;
-Book.defaultProps = defaultProps;
-export default Book;
+BookInputWidget.propTypes = propTypes;
+BookInputWidget.defaultProps = defaultProps;
+export default BookInputWidget;

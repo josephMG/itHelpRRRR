@@ -15,26 +15,20 @@ class Book extends React.Component {
 		this.onCheckboxChange = this.onCheckboxChange.bind(this);
 		this.onModifyClick = this.onModifyClick.bind(this);
 		this.onDeleteClick = this.onDeleteClick.bind(this);
+		this.updateCheckboxStatus = this.updateCheckboxStatus.bind(this);
 		this.state = {
 			status: props.status
 		}
 	}
+	componentWillReceiveProps(nextProps){
+		let {status} = nextProps;
+		this.setState({status});
+	}
+	componentDidUpdate(){
+	}
 	componentDidMount(){
-		let target = this.refs.checkbox
-		switch(this.state.status){
-			case "unread":
-				target.checked = false;
-				target.indeterminate = false;
-				break;
-			case "reading":
-				target.checked = false;
-				target.indeterminate = true;
-				break;
-			case "finished":
-				target.checked = true;
-				target.indeterminate = false;
-				break;
-		}
+		const {status} = this.state;
+		this.updateCheckboxStatus(status);
 	}
 	onCheckboxChange(e){
 		let target = e.target;
@@ -68,9 +62,28 @@ class Book extends React.Component {
 		let {id, onModify} = this.props;
 		onModify(id);
 	}
+	updateCheckboxStatus(status){
+		let target = this.refs.checkbox;
+		if(!target) return;
+		switch(this.state.status){
+			case "unread":
+				target.checked = false;
+				target.indeterminate = false;
+				break;
+			case "reading":
+				target.checked = false;
+				target.indeterminate = true;
+				break;
+			case "finished":
+				target.checked = true;
+				target.indeterminate = false;
+				break;
+		}
+	}
 	render() {
 		const {id, name,  author_name} = this.props;
 		const {status} = this.state;
+		this.updateCheckboxStatus(status);
 		return (
 			<div className="row">
 				<div className="col-md-1">{id}</div>

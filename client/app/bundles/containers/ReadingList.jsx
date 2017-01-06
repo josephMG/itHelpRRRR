@@ -35,7 +35,6 @@ class ReadingList extends React.Component {
           .subscribe(
             (data) => {
               let books = data.response.books;
-              console.log(books);
               this.setState({books});
             },
             function (error) {
@@ -59,7 +58,7 @@ class ReadingList extends React.Component {
               let books = data.response.books;
               this.setState({books});
             },
-            function (error) {
+            (error) => {
             }
           );
   }
