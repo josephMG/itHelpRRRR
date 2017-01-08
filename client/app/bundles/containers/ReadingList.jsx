@@ -1,4 +1,5 @@
 import React, { PropTypes } from 'react';
+import { connect } from 'react-redux'; 
 import ReadingListWidget from '../components/ReadingListWidget';
 import {DOM as RxDOM} from 'rx-dom';
 
@@ -9,6 +10,7 @@ class ReadingList extends React.Component {
   constructor(props, context) {
     super(props, context);
     this.allBooks = this.allBooks.bind(this);
+    this.sendAJAX = this.sendAJAX.bind(this);
     this.state = {
       books: this.props.books
     };
@@ -16,30 +18,29 @@ class ReadingList extends React.Component {
   componentDidMount(){
     this.allBooks();
   }
-  allBooks(bookAttributes) {
-    let settings = { url: Routes.books_path(), responseType: 'json'}
+	sendAJAX(settings, callback){
     RxDOM.ajax(settings)
     .subscribe(
-      (data) => {
-        let books = data.response.books;
-        this.setState({books});
-      },
+				callback
+      ,
       function (error) {
       }
     );
+	}
+  allBooks(bookAttributes) {
+    let settings = { url: Routes.books_path(), responseType: 'json'}
+		this.sendAJAX(settings, (data) => {
+        let books = data.response.books;
+        this.setState({books});
+		})
   }
   updateBook(bookAttributes, id) {
     let settings = id == 0? { url: Routes.books_path(), responseType: 'json', method: 'POST', body: bookAttributes} :
                           { url: Routes.book_path(id), responseType: 'json', method: 'PUT', body: bookAttributes}
-    RxDOM.ajax(settings)
-          .subscribe(
-            (data) => {
-              let books = data.response.books;
-              this.setState({books});
-            },
-            function (error) {
-            }
-          );
+		this.sendAJAX(settings, (data) => {
+        let books = data.response.books;
+        this.setState({books});
+		})
   }
   updateBookStatus(id, status) {
     let settings = {
@@ -52,25 +53,14 @@ class ReadingList extends React.Component {
       },
       body: JSON.stringify({book:{status: status}})
     }
-    RxDOM.ajax(settings)
-          .subscribe(
-            (data) => {
-              let books = data.response.books;
-              this.setState({books});
-            },
-            (error) => {
-            }
-          );
+		this.sendAJAX(settings, (data) => {
+        let books = data.response.books;
+        this.setState({books});
+		})
   }
   deleteBook(id) {
     let settings = { url: Routes.book_path(id), method: 'DELETE'}
-    RxDOM.ajax(settings)
-         .subscribe(
-            (data) => {
-            },
-            (error) => {
-            }
-          );
+		this.sendAJAX(settings)
   }
   render() {
     return (
@@ -84,4 +74,4 @@ class ReadingList extends React.Component {
   }
 }
 ReadingList.propTypes = propTypes;
-export default ReadingList;
+export default connect()(ReadingList);
