@@ -1,5 +1,5 @@
-import { combineReducers, applyMiddleware, createStore } from 'redux';
-import middleware from 'redux-thunk';
+import { combineReducers, applyMiddleware, createStore, compose } from 'redux';
+import thunk from 'redux-thunk';
 
 import reducers from '../reducers';
 import { initialStates } from '../reducers';
@@ -18,5 +18,11 @@ export default (props, railsContext) => {
 			railsContext
     }),
   };
-  return applyMiddleware(middleware)(createStore)(combinedReducer, initialState);
+	const store = createStore(combinedReducer, 
+														initialState, 
+														compose(applyMiddleware(thunk), 
+															      window.devToolsExtension ? window.devToolsExtension() : f => f)
+													 )
+  return store;
+  //return applyMiddleware(middleware,)(createStore)(combinedReducer, initialState);
 };

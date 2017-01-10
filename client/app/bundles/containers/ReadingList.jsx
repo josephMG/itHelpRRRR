@@ -2,45 +2,26 @@ import React, { PropTypes } from 'react';
 import { connect } from 'react-redux'; 
 import ReadingListWidget from '../components/ReadingListWidget';
 import {DOM as RxDOM} from 'rx-dom';
-
+import * as ReadingListActions from '../actions/ReadingListActionCreators'
 let propTypes = {
   books: PropTypes.array.isRequired,
 };
 class ReadingList extends React.Component {
   constructor(props, context) {
     super(props, context);
+		console.log(props)
     this.allBooks = this.allBooks.bind(this);
-    this.sendAJAX = this.sendAJAX.bind(this);
-    this.state = {
-      books: this.props.books
-    };
   }
   componentDidMount(){
-    this.allBooks();
   }
-	sendAJAX(settings, callback){
-    RxDOM.ajax(settings)
-    .subscribe(
-				callback
-      ,
-      function (error) {
-      }
-    );
-	}
   allBooks(bookAttributes) {
     let settings = { url: Routes.books_path(), responseType: 'json'}
-		this.sendAJAX(settings, (data) => {
-        let books = data.response.books;
-        this.setState({books});
-		})
+		this.props.allBook(settings)
   }
   updateBook(bookAttributes, id) {
     let settings = id == 0? { url: Routes.books_path(), responseType: 'json', method: 'POST', body: bookAttributes} :
                           { url: Routes.book_path(id), responseType: 'json', method: 'PUT', body: bookAttributes}
-		this.sendAJAX(settings, (data) => {
-        let books = data.response.books;
-        this.setState({books});
-		})
+		this.props.updateBook(settings)
   }
   updateBookStatus(id, status) {
     let settings = {
@@ -53,19 +34,16 @@ class ReadingList extends React.Component {
       },
       body: JSON.stringify({book:{status: status}})
     }
-		this.sendAJAX(settings, (data) => {
-        let books = data.response.books;
-        this.setState({books});
-		})
+		this.props.updateBookStatus(settings)
   }
   deleteBook(id) {
     let settings = { url: Routes.book_path(id), method: 'DELETE'}
-		this.sendAJAX(settings)
+		this.props.deleteBook(settings)
   }
   render() {
     return (
       <div>
-        <ReadingListWidget books={this.state.books}
+        <ReadingListWidget books={this.props.books}
                            updateBook={(attributes, id=0) => this.updateBook(attributes, id)}
                            updateBookStatus={(id, status) => this.updateBookStatus(id, status)}
                            deleteBook={(id) => this.deleteBook(id)}/>
@@ -74,4 +52,4 @@ class ReadingList extends React.Component {
   }
 }
 ReadingList.propTypes = propTypes;
-export default connect()(ReadingList);
+export default connect(null, ReadingListActions)(ReadingList);

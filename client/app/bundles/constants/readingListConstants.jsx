@@ -4,7 +4,7 @@
 import mirrorCreator from 'mirror-creator';
 
 const actionTypes = mirrorCreator([
-  'LOAD_BOOKs',
+  'LOAD_BOOKS',
   'DELETE_BOOK',
   'UPDATE_BOOK',
   'UPDATE_BOOK_STATUS',

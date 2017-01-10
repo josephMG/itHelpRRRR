@@ -9,16 +9,12 @@ export const $$initialState = Immutable.fromJS({
 
 export default function readingListReducer($$state = $$initialState, action) {
   const { type, books } = action;
-
   switch (type) {
     case actionTypes.LOAD_BOOKS:
-      return $$state.set('books', books);
+      return $$state.set('books',Immutable.fromJS(books));
     case actionTypes.UPDATE_BOOK:
-      return $$state.set('books', books);
     case actionTypes.DELETE_BOOK:
-      return $$state.set('books', books);
     case actionTypes.UPDATE_BOOK_STATUS:
-      return $$state.set('books', books);
     default:
       return $$state;
   }

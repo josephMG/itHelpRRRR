@@ -8,6 +8,7 @@ import ReadingList from './ReadingList';
 import * as readingListActions from '../actions/ReadingListActionCreators';
 
 const ReadingListContainer = ({ actions, books, railsContext }) => {
+	console.log(books);
   return <ReadingList {...{ actions, books, railsContext }} />
 };
 ReadingListContainer.propTypes = {
